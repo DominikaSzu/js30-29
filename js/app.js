@@ -1,8 +1,10 @@
 let interval;
 const timeDisplayer = document.querySelector('.display__time-left');
 const endTime = document.querySelector('.display__end-time');
+const buttons = document.querySelectorAll('[data-time]');
 
 function timer(seconds) {
+    clearInterval(interval); // clear any Interval in progress
     const now = Date.now();
     const then = now + seconds * 1000;
     displaySecondsLeft(seconds);
@@ -29,8 +31,14 @@ function displaySecondsLeft(seconds) {
 function displayEndDate(timestamp) {
     const endDate = new Date(timestamp);
     let hours = endDate.getHours();
-    const adjustedHour = hours > 12 ? hours -= 12 : hours;
+    const adjustedHour = hours > 12 ? hours - 12 : hours;
     const minutes = endDate.getMinutes();
-    const seconds = endDate.getSeconds();
-    endTime.textContent = `Be back here at ${adjustedHour < 10 ? 0 : ''}${adjustedHour}:${minutes < 10 ? 0 : ''}${minutes}:${seconds < 10 ? 0 : ''}${seconds}`;
+    endTime.textContent = `Be back here at ${adjustedHour < 10 ? 0 : ''}${adjustedHour}:${minutes < 10 ? 0 : ''}${minutes}`;
 }
+
+function addTime() {
+    const secsToBeAdded = this.dataset.time;
+    timer(secsToBeAdded);
+}
+
+buttons.forEach(button => button.addEventListener('click', addTime));
