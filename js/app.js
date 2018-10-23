@@ -2,9 +2,11 @@ let interval;
 const timeDisplayer = document.querySelector('.display__time-left');
 const endTime = document.querySelector('.display__end-time');
 const buttons = document.querySelectorAll('[data-time]');
+//const form = document.querySelector('[name="customForm"]');
 
 function timer(seconds) {
     clearInterval(interval); // clear any Interval in progress
+    document.customForm.reset();
     const now = Date.now();
     const then = now + seconds * 1000;
     displaySecondsLeft(seconds);
@@ -41,4 +43,14 @@ function addTime() {
     timer(secsToBeAdded);
 }
 
+function addMinutes(e) {
+    e.preventDefault();
+    const minutes = this.minutes.value;
+    const seconds = minutes * 60;
+    if(!Number(minutes)) return;
+    timer(seconds);
+    this.reset();
+}
+
+document.customForm.addEventListener('submit', addMinutes);
 buttons.forEach(button => button.addEventListener('click', addTime));
